@@ -1,0 +1,11 @@
+overwrite: true
+schema:
+  - ${COMMERCETOOLS_API_HOST}/${COMMERCETOOLS_PROJECT_KEY}/graphql:
+      headers:
+        Authorization: 'Bearer ${COMMERCETOOLS_ACCESS_TOKEN}'
+        X-Graphql-Target: 'ctp'
+        X-Project-Key: ${COMMERCETOOLS_PROJECT_KEY}
+generates:
+  ./src/graphql/generated/graphql.schema.json:
+    plugins:
+      - 'introspection'

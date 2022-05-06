@@ -1,0 +1,21 @@
+{
+  "semi": true,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth":  100,
+  "parser": "typescript",
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "*.graphql",
+      "options": {
+        "parser": "graphql"
+      }
+    }
+  ]
+}
