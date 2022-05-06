@@ -14,7 +14,7 @@ import Text from '@commercetools-uikit/text';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { PERMISSIONS } from '../../constants';
+import { PERMISSIONS } from '../../constants/constants';
 import {
   useChannelDetailsFetcher,
   useChannelDetailsUpdater,
@@ -58,7 +58,6 @@ const ChannelDetails = (props) => {
         });
       } catch (graphQLErrors) {
         const transformedErrors = transformErrors(graphQLErrors);
-        console.log({ graphQLErrors, transformedErrors });
         if (transformedErrors.unmappedErrors.length > 0)
           showApiErrorNotification({
             errors: transformedErrors.unmappedErrors,

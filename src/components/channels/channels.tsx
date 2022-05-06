@@ -1,27 +1,27 @@
-import React from 'react';
-import { lazy } from 'react';
-import { useIntl } from 'react-intl';
-import { Link as RouterLink, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
-import { usePaginationState, useDataTableSortingState } from '@commercetools-uikit/hooks';
-import { BackIcon } from '@commercetools-uikit/icons';
-import Constraints from '@commercetools-uikit/constraints';
-import FlatButton from '@commercetools-uikit/flat-button';
-import LoadingSpinner from '@commercetools-uikit/loading-spinner';
-import DataTable from '@commercetools-uikit/data-table';
-import { ContentNotification } from '@commercetools-uikit/notifications';
-import { Pagination } from '@commercetools-uikit/pagination';
-import Spacings from '@commercetools-uikit/spacings';
-import Text from '@commercetools-uikit/text';
-import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import {
   formatLocalizedString,
   transformLocalizedFieldToLocalizedString,
 } from '@commercetools-frontend/l10n';
-import messages from './messages';
-import { useChannelsFetcher } from '../../hooks/use-channels-connector';
+import Constraints from '@commercetools-uikit/constraints';
+import DataTable from '@commercetools-uikit/data-table';
+import FlatButton from '@commercetools-uikit/flat-button';
+import { useDataTableSortingState, usePaginationState } from '@commercetools-uikit/hooks';
+import { BackIcon } from '@commercetools-uikit/icons';
+import LoadingSpinner from '@commercetools-uikit/loading-spinner';
+import { ContentNotification } from '@commercetools-uikit/notifications';
+import { Pagination } from '@commercetools-uikit/pagination';
+import Spacings from '@commercetools-uikit/spacings';
+import Text from '@commercetools-uikit/text';
+import React, { lazy } from 'react';
+import { useIntl } from 'react-intl';
+import { Link as RouterLink, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import { getErrorMessage } from '../../helpers';
+import { useChannelsFetcher } from '../../hooks/use-channels-connector';
+import useRoutes from '../../hooks/use-channels-connector/use-routes';
+import messages from './messages';
 
 const ChannelDetails = lazy(() => import('../channel-details'));
 
@@ -51,6 +51,7 @@ const itemRenderer = (item, column, dataLocale, projectLanguages) => {
 };
 
 const Channels = (props) => {
+  const routes = useRoutes();
   const intl = useIntl();
   const match = useRouteMatch();
   const { push } = useHistory();
@@ -117,8 +118,8 @@ const Channels = (props) => {
             totalItems={channelsPaginatedResult.total}
           />
           <Switch>
-            <SuspendedRoute path={`${match.url}/:id`}>
-              <ChannelDetails onClose={() => push(`${match.url}`)} />
+            <SuspendedRoute path={routes.channelDetails.path}>
+              <ChannelDetails onClose={routes.channelList.go} />
             </SuspendedRoute>
           </Switch>
         </Spacings.Stack>

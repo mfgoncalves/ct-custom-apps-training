@@ -5,7 +5,7 @@ import {
   renderAppWithRedux,
 } from '@commercetools-frontend/application-shell/test-utils';
 import ApplicationRoutes from '../routes';
-import { entryPointUriPath } from '../constants';
+import { entryPointUriPath } from '../constants/constants';
 
 const mergeWithDefaultOptions = (options: any = {}) => ({
   ...options,

@@ -5,7 +5,7 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import Channels from './components/channels';
 import Welcome from './components/welcome';
-import { PERMISSIONS } from './constants';
+import { PERMISSIONS } from './constants/constants';
 
 interface Props {
   children?: React.ReactNode;

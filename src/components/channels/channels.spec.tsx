@@ -9,7 +9,7 @@ import {
 import { buildGraphqlList } from '@commercetools-test-data/core';
 import { renderApplicationWithRedux } from '../../test-utils';
 import * as ChannelMock from '../../test-utils/test-data/channel';
-import { entryPointUriPath, PERMISSIONS } from '../../constants';
+import { entryPointUriPath, PERMISSIONS } from '../../constants/constants';
 import ApplicationRoutes from '../../routes';
 
 const mockServer = setupServer();
