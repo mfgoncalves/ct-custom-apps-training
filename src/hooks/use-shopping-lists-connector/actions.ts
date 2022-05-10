@@ -1,5 +1,4 @@
-import { diffpatcher } from '../../helpers';
-import { buildBaseAttributesActions } from '../../helpers';
+import { buildBaseAttributesActions, diffpatcher } from '../../helpers';
 
 const actions = [
   { action: 'changeName', key: 'name' },

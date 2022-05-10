@@ -26,6 +26,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'graphql'],
   rules: {
+    'no-duplicate-imports': 'warn',
     'no-use-before-define': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
     'react/prop-types': 'off',
