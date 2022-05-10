@@ -8,7 +8,7 @@
 import clone from 'lodash/cloneDeep';
 import isNil from 'lodash/isNil';
 import { diffpatcher } from '.';
-import { Action } from '../types/Action';
+import { Action } from '../types';
 
 export const buildBaseAttributesActions = (
   actions: Action[],

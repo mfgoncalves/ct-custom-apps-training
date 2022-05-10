@@ -16,10 +16,10 @@ const mergeWithDefaultOptions = (options: any = {}) => ({
   apolloClient: createApolloClient(),
 });
 
-const renderApplication = (ui, options) =>
+const renderApplication = (ui: any, options: any) =>
   renderApp(<ApplicationRoutes>{ui}</ApplicationRoutes>, mergeWithDefaultOptions(options));
 
-const renderApplicationWithRedux = (ui, options = {}) =>
+const renderApplicationWithRedux = (ui: any, options = {}) =>
   renderAppWithRedux(<ApplicationRoutes>{ui}</ApplicationRoutes>, mergeWithDefaultOptions(options));
 
 export { renderApplication, renderApplicationWithRedux };

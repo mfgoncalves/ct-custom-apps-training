@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'msw';
+import { graphql, GraphQLHandler, GraphQLRequest, GraphQLVariables } from 'msw';
 import { setupServer } from 'msw/node';
 import {
   fireEvent,
@@ -42,7 +42,9 @@ const renderApp = (options: any = {}, includeManagePermissions = true) => {
     route,
     project: {
       allAppliedPermissions: mapResourceAccessToAppliedPermissions(
-        [PERMISSIONS.View, includeManagePermissions && PERMISSIONS.Manage].filter(Boolean),
+        [PERMISSIONS.View, includeManagePermissions && PERMISSIONS.Manage].filter(
+          Boolean,
+        ) as string[],
       ),
     },
     ...options,
@@ -125,7 +127,10 @@ const updateChannelDetailsHandlerWithARandomError = graphql.mutation(
   },
 );
 
-const useMockServerHandlers = (fetchHandler, updateHandler?: any) => {
+const useMockServerHandlers = (
+  fetchHandler: GraphQLHandler<GraphQLRequest<GraphQLVariables>>,
+  updateHandler?: any,
+) => {
   mockServer.use(
     ...[
       graphql.query('FetchChannels', (_req, res, ctx) => {

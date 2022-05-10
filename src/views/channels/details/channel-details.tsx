@@ -20,9 +20,10 @@ import {
   useChannelDetailsUpdater,
 } from '../../../hooks/use-channels-connector';
 import { useLocale } from '../../../hooks/use-locale';
-import { docToFormValues } from '../helpers/conversions';
+import { docToFormValues, FormValues } from '../helpers/conversions';
 import messages from './messages';
 import ChannelsDetailsForm from './containers/channel-details-form';
+import { FormikHelpers } from 'formik';
 
 const ChannelDetails = (props: any) => {
   const intl = useIntl();
@@ -37,17 +38,20 @@ const ChannelDetails = (props: any) => {
   const showApiErrorNotification = useShowApiErrorNotification();
   const channelDetailsUpdater = useChannelDetailsUpdater();
   const handleSubmit = useCallback(
-    async (formikValues, formikHelpers) => {
+    async (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => {
       try {
+        if (!channel) {
+          return;
+        }
         await channelDetailsUpdater.execute({
           original: channel,
-          nextDraft: formikValues,
+          nextDraft: values,
         });
         showNotification({
           kind: 'success',
           domain: DOMAINS.SIDE,
           text: intl.formatMessage(messages.channelUpdated, {
-            channelName: formatLocalizedString(formikValues, {
+            channelName: formatLocalizedString(values as any, {
               key: 'name',
               locale: dataLocale,
               fallbackOrder: projectLanguages,
@@ -82,7 +86,7 @@ const ChannelDetails = (props: any) => {
       isReadOnly={!canManage}
       dataLocale={dataLocale}
     >
-      {(formProps) => {
+      {(formProps: any) => {
         return (
           <FormModalPage
             title={formatLocalizedString(

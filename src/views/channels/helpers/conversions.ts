@@ -4,7 +4,13 @@ import {
   transformLocalizedStringToLocalizedField,
 } from '@commercetools-frontend/l10n';
 
-export const docToFormValues = (channel: any, languages: any[]) => ({
+export interface FormValues {
+  key: string;
+  roles: string[];
+  name: Record<string, string>;
+}
+
+export const docToFormValues = (channel: any, languages: any[]): FormValues => ({
   key: channel?.key ?? '',
   roles: channel?.roles ?? [],
   name: LocalizedTextInput.createLocalizedString(
@@ -13,7 +19,7 @@ export const docToFormValues = (channel: any, languages: any[]) => ({
   ),
 });
 
-export const formValuesToDoc = (formValues: any) => ({
+export const formValuesToDoc = (formValues: FormValues) => ({
   key: formValues.key,
   roles: formValues.roles,
   nameAllLocales: transformLocalizedStringToLocalizedField(

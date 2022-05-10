@@ -6,10 +6,11 @@ import {
   useUpdateChannelDetailsMutation,
 } from '../../graphql/generated/graphql';
 import { createGraphQlUpdateActions, extractErrorFromGraphQlResponse } from '../../helpers';
+import { FetcherWithPagination } from '../../types';
 import { docToFormValues } from '../../views/channels/helpers/conversions';
 import { useLocale } from '../use-locale';
 
-export const useChannelsFetcher = ({ page, perPage, tableSorting }) => {
+export const useChannelsFetcher = ({ page, perPage, tableSorting }: FetcherWithPagination) => {
   const { data, error, loading } = useFetchChannelsQuery({
     variables: {
       limit: perPage.value,
@@ -51,7 +52,13 @@ export const useChannelDetailsUpdater = () => {
   const [updateChannelDetails, { loading }] = useUpdateChannelDetailsMutation();
 
   const syncStores = createSyncChannels();
-  const execute = async ({ original, nextDraft }) => {
+  const execute = async ({
+    original,
+    nextDraft,
+  }: {
+    original: NonNullable<ReturnType<typeof useChannelDetailsFetcher>['channel']>;
+    nextDraft: any;
+  }) => {
     const originalDraft = docToFormValues(original, projectLanguages);
 
     const actions = syncStores.buildActions(nextDraft, originalDraft);

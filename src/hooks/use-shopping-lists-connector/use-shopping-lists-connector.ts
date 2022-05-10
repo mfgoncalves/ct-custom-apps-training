@@ -5,17 +5,11 @@ import {
   useUpdateShoppingListMutation,
 } from '../../graphql/generated/graphql';
 import { createGraphQlUpdateActions, extractErrorFromGraphQlResponse } from '../../helpers';
-import { PaginationState, TableSortingState } from '../../types';
+import { FetcherWithPagination } from '../../types';
 import { docToFormValues } from '../../views/shopping-lists/helpers/conversions';
 import { getShoppingListActions } from './actions';
 
-interface Props {
-  page: PaginationState['page'];
-  perPage: PaginationState['perPage'];
-  tableSorting: TableSortingState;
-}
-
-export const useShoppingListsFetcher = ({ page, perPage, tableSorting }: Props) => {
+export const useShoppingListsFetcher = ({ page, perPage, tableSorting }: FetcherWithPagination) => {
   const { data, ...rest } = useFetchShoppingListsQuery({
     variables: {
       limit: perPage.value,
