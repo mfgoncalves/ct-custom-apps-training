@@ -10,7 +10,7 @@ import isNil from 'lodash/isNil';
 import { diffpatcher } from '.';
 import { Action } from '../types/Action';
 
-export const buildActions = (
+export const buildBaseAttributesActions = (
   actions: Action[],
   diff: Record<string, unknown>,
   oldObj: any,
