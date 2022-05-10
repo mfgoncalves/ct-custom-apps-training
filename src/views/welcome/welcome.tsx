@@ -10,17 +10,17 @@ import messages from './messages';
 import styles from './welcome.mod.css';
 import WebDeveloperSvg from './web-developer.svg';
 
-const WrapWith = (props) => (props.condition ? props.wrapper(props.children) : props.children);
+const WrapWith = (props: any) => (props.condition ? props.wrapper(props.children) : props.children);
 WrapWith.displayName = 'WrapWith';
 
-const InfoCard = (props) => (
+const InfoCard = (props: any) => (
   <Grid.Item>
     <div className={styles.infoCard}>
       <Spacings.Stack scale="m">
         <Text.Headline as="h3">
           <WrapWith
             condition={true}
-            wrapper={(children) =>
+            wrapper={(children: React.ReactNode) =>
               props.isExternal ? (
                 <a
                   className={styles.infoCardLink}

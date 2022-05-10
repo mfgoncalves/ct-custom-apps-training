@@ -3,11 +3,11 @@ import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import Spacings from '@commercetools-uikit/spacings';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Channels from './components/channels';
-import Welcome from './components/welcome';
 import { PERMISSIONS } from './constants/constants';
 import useRoutes from './hooks/use-routes';
-import ShoppingLists from './views/shopping-lists/list/shopping-lists';
+import { Channels } from './views/channels';
+import { ShoppingLists } from './views/shopping-lists';
+import Welcome from './views/welcome';
 
 interface Props {
   children?: React.ReactNode;

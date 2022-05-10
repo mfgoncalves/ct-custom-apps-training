@@ -3,9 +3,9 @@ import {
   screen,
   mapResourceAccessToAppliedPermissions,
 } from '@commercetools-frontend/application-shell/test-utils';
-import { renderApplicationWithRedux } from '../../test-utils';
-import { entryPointUriPath, PERMISSIONS } from '../../constants/constants';
-import ApplicationRoutes from '../../routes';
+import { renderApplicationWithRedux } from '../../../test-utils';
+import { entryPointUriPath, PERMISSIONS } from '../../../constants/constants';
+import ApplicationRoutes from '../../../routes';
 
 const renderApp = (options: any = {}) => {
   const route = options.route || `/my-project/${entryPointUriPath}`;

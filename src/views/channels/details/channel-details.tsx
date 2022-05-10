@@ -21,7 +21,7 @@ import {
 } from '../../../hooks/use-channels-connector';
 import { useLocale } from '../../../hooks/use-locale';
 import { docToFormValues } from '../helpers/conversions';
-import messages from '../helpers/messages';
+import messages from './messages';
 import ChannelsDetailsForm from './containers/channel-details-form';
 
 const ChannelDetails = (props: any) => {

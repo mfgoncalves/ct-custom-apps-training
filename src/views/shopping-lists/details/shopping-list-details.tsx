@@ -22,7 +22,7 @@ import { useLocale } from '../../../hooks/use-locale';
 import { useShoppingListDetailsFetcher } from '../../../hooks/use-shopping-lists-connector';
 import { useShoppingListDetailsUpdater } from '../../../hooks/use-shopping-lists-connector/use-shopping-lists-connector';
 import { docToFormValues, FormValues } from '../helpers/conversions';
-import messages from '../helpers/messages';
+import messages from './messages';
 
 interface Props {
   onClose: () => void;

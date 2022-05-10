@@ -17,7 +17,7 @@ import Text from '@commercetools-uikit/text';
 import React, { lazy } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, Switch, useHistory, useRouteMatch } from 'react-router-dom';
-import messages from '../../../components/channels/messages';
+import messages from './messages';
 import { getErrorMessage } from '../../../helpers';
 import { useChannelsFetcher } from '../../../hooks/use-channels-connector';
 import { useLocale } from '../../../hooks/use-locale';
