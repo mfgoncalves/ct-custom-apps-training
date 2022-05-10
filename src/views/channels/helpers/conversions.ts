@@ -4,16 +4,16 @@ import {
   transformLocalizedStringToLocalizedField,
 } from '@commercetools-frontend/l10n';
 
-export const docToFormValues = (channel, languages) => ({
+export const docToFormValues = (channel: any, languages: any[]) => ({
   key: channel?.key ?? '',
   roles: channel?.roles ?? [],
   name: LocalizedTextInput.createLocalizedString(
     languages,
-    transformLocalizedFieldToLocalizedString(channel?.nameAllLocales ?? []),
+    transformLocalizedFieldToLocalizedString(channel?.nameAllLocales ?? []) ?? {},
   ),
 });
 
-export const formValuesToDoc = (formValues) => ({
+export const formValuesToDoc = (formValues: any) => ({
   key: formValues.key,
   roles: formValues.roles,
   nameAllLocales: transformLocalizedStringToLocalizedField(

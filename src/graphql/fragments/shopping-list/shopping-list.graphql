@@ -1,0 +1,8 @@
+fragment shoppingListFields on ShoppingList {
+  id
+  version
+  key
+  nameAllLocales {
+    ...localizedStringFields
+  }
+}

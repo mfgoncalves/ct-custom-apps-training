@@ -1,7 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import { useMemo } from 'react';
 import { generatePath, match, useHistory, useLocation, useRouteMatch } from 'react-router';
-import { ROUTES } from '../../constants';
+import { ROUTES } from '../constants';
 
 type MakeRoute = (x: { path: string; currentMatch: match; goTo: GoToFn }) => Route;
 type GoToFn = ReturnType<typeof useHistory>['push'];

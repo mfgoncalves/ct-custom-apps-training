@@ -1,0 +1,4 @@
+fragment localizedStringFields on LocalizedString {
+  locale
+  value
+}

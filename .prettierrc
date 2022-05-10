@@ -16,6 +16,12 @@
       "options": {
         "parser": "graphql"
       }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
     }
   ]
 }

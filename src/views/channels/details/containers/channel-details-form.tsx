@@ -5,16 +5,16 @@ import TextField from '@commercetools-uikit/text-field';
 import { useFormik } from 'formik';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { CHANNEL_ROLES } from './constants';
-import messages from './messages';
-import validate from './validate';
+import { CHANNEL_ROLES } from '../../helpers/constants';
+import messages from '../../helpers/messages';
+import validate from '../../helpers/validate';
 
 const getRoleOptions = Object.keys(CHANNEL_ROLES).map((key) => ({
   label: CHANNEL_ROLES[key],
   value: CHANNEL_ROLES[key],
 }));
 
-const ChannelDetailsForm = (props) => {
+const ChannelDetailsForm = (props: any) => {
   const intl = useIntl();
   const formik = useFormik({
     initialValues: props.initialValues,

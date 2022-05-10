@@ -13,7 +13,7 @@
     "test": "jest --config jest.test.config.js --silent",
     "test:watch": "jest --config jest.test.config.js --watch",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.gql,.graphql",
-    "format": "prettier --write '**/*.js'",
+    "format": "prettier --write \"**/*.*(js|jsx|ts|tsx|json|css|graphql)\"",
     "generate-schema": "DOTENV_CONFIG_PATH=./.env graphql-codegen -r dotenv/config --config codegen-generate-schema.yml",
     "generate-typescript": "DOTENV_CONFIG_PATH=./.env graphql-codegen -r dotenv/config --config codegen-generate-typescript.yml --watch"
   },
@@ -47,6 +47,7 @@
     "@commercetools-uikit/text-field": "^15.0.0",
     "@commercetools-uikit/text-input": "^15.0.0",
     "@commercetools/sync-actions": "^4.10.1",
+    "diffpatcher": "^1.2.0",
     "msw": "0.39.2",
     "omit-empty-es": "1.1.3",
     "prop-types": "15.8.1",

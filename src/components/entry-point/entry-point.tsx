@@ -20,11 +20,13 @@ declare global {
     app: any;
   }
 }
-const EntryPoint = () => (
-  <ApplicationShell environment={window.app} applicationMessages={loadMessages}>
-    <AsyncApplicationRoutes />
-  </ApplicationShell>
-);
+const EntryPoint = () => {
+  return (
+    <ApplicationShell environment={window.app} applicationMessages={loadMessages}>
+      <AsyncApplicationRoutes />
+    </ApplicationShell>
+  );
+};
 EntryPoint.displayName = 'EntryPoint';
 
 export default EntryPoint;

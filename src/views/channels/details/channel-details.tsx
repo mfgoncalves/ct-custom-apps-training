@@ -3,7 +3,6 @@ import {
   useShowNotification,
 } from '@commercetools-frontend/actions-global';
 import { FormModalPage, PageNotFound } from '@commercetools-frontend/application-components';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { formatLocalizedString } from '@commercetools-frontend/l10n';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
@@ -14,24 +13,23 @@ import Text from '@commercetools-uikit/text';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { PERMISSIONS } from '../../constants/constants';
+import { PERMISSIONS } from '../../../constants/constants';
+import { transformErrors } from '../../../helpers/transform-errors';
 import {
   useChannelDetailsFetcher,
   useChannelDetailsUpdater,
-} from '../../hooks/use-channels-connector';
-import ChannelsDetailsForm from './channel-details-form';
-import { docToFormValues } from './conversions';
-import messages from './messages';
-import { transformErrors } from './transform-errors';
+} from '../../../hooks/use-channels-connector';
+import { useLocale } from '../../../hooks/use-locale';
+import { docToFormValues } from '../helpers/conversions';
+import messages from '../helpers/messages';
+import ChannelsDetailsForm from './containers/channel-details-form';
 
-const ChannelDetails = (props) => {
+const ChannelDetails = (props: any) => {
   const intl = useIntl();
   const params = useParams<{ id: string }>();
   const { loading, error, channel } = useChannelDetailsFetcher(params.id);
-  const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
-    dataLocale: context.dataLocale,
-    projectLanguages: context.project.languages,
-  }));
+  const { dataLocale, projectLanguages } = useLocale();
+
   const canManage = useIsAuthorized({
     demandedPermissions: [PERMISSIONS.Manage],
   });

@@ -4089,11 +4089,6 @@ export type MessagesConfigurationDraft = {
   enabled: Scalars['Boolean'];
 };
 
-export type MissingFacetInput = {
-  alias?: InputMaybe<Scalars['String']>;
-  path: Scalars['String'];
-};
-
 export type MissingFilterInput = {
   path: Scalars['String'];
 };
@@ -8248,12 +8243,8 @@ export type SearchFacetInput = {
 };
 
 export type SearchFacetModelInput = {
-  missing?: InputMaybe<MissingFacetInput>;
   range?: InputMaybe<RangeFacetInput>;
   terms?: InputMaybe<TermsFacetInput>;
-  tree?: InputMaybe<TreeFacetInput>;
-  value?: InputMaybe<ValueFacetInput>;
-  valueCount?: InputMaybe<ValueCountFacetInput>;
 };
 
 export type SearchFilterInput = {
@@ -11462,14 +11453,6 @@ export type TransitionStagedOrderStateOutput = StagedOrderUpdateActionOutput & {
   type: Scalars['String'];
 };
 
-export type TreeFacetInput = {
-  alias?: InputMaybe<Scalars['String']>;
-  countProducts?: Scalars['Boolean'];
-  path: Scalars['String'];
-  rootValues: Array<Scalars['String']>;
-  subTreeValues: Array<Scalars['String']>;
-};
-
 export type TreeFilterInput = {
   path: Scalars['String'];
   rootValues: Array<Scalars['String']>;
@@ -11611,18 +11594,6 @@ export type UserProvidedIdentifiers = {
 export type UserProvidedIdentifiersSlugArgs = {
   acceptLanguage?: InputMaybe<Array<Scalars['Locale']>>;
   locale?: InputMaybe<Scalars['Locale']>;
-};
-
-export type ValueCountFacetInput = {
-  alias?: InputMaybe<Scalars['String']>;
-  path: Scalars['String'];
-};
-
-export type ValueFacetInput = {
-  alias?: InputMaybe<Scalars['String']>;
-  countProducts?: Scalars['Boolean'];
-  path: Scalars['String'];
-  values: Array<Scalars['String']>;
 };
 
 export type ValueFacetResult = FacetResult & {
@@ -11809,6 +11780,61 @@ export type SetKey = {
   key?: InputMaybe<Scalars['String']>;
 };
 
+export type LocalizedStringFieldsFragment = { locale: any; value: string };
+
+export type ShoppingListFieldsFragment = {
+  id: string;
+  version: any;
+  key?: string | null;
+  nameAllLocales: Array<{ locale: any; value: string }>;
+};
+
+export type UpdateChannelDetailsMutationVariables = Exact<{
+  channelId: Scalars['String'];
+  version: Scalars['Long'];
+  actions: Array<ChannelUpdateAction> | ChannelUpdateAction;
+}>;
+
+export type UpdateChannelDetailsMutation = {
+  updateChannel?: {
+    id: string;
+    version: any;
+    key: string;
+    roles: Array<ChannelRole>;
+    nameAllLocales?: Array<{ locale: any; value: string }> | null;
+  } | null;
+};
+
+export type CreateShoppingListMutationVariables = Exact<{
+  draft: ShoppingListDraft;
+}>;
+
+export type CreateShoppingListMutation = { createShoppingList?: { id: string } | null };
+
+export type DeleteShoppingListMutationVariables = Exact<{
+  version: Scalars['Long'];
+  id: Scalars['String'];
+}>;
+
+export type DeleteShoppingListMutation = {
+  deleteShoppingList?: { id: string; version: any } | null;
+};
+
+export type UpdateShoppingListMutationVariables = Exact<{
+  version: Scalars['Long'];
+  id: Scalars['String'];
+  actions: Array<ShoppingListUpdateAction> | ShoppingListUpdateAction;
+}>;
+
+export type UpdateShoppingListMutation = {
+  updateShoppingList?: {
+    id: string;
+    version: any;
+    key?: string | null;
+    nameAllLocales: Array<{ locale: any; value: string }>;
+  } | null;
+};
+
 export type FetchChannelDetailsQueryVariables = Exact<{
   channelId: Scalars['String'];
 }>;
@@ -11843,22 +11869,267 @@ export type FetchChannelsQuery = {
   };
 };
 
-export type UpdateChannelDetailsMutationVariables = Exact<{
-  channelId: Scalars['String'];
-  version: Scalars['Long'];
-  actions: Array<ChannelUpdateAction> | ChannelUpdateAction;
+export type FetchShoppingListDetailsQueryVariables = Exact<{
+  id: Scalars['String'];
 }>;
 
-export type UpdateChannelDetailsMutation = {
-  updateChannel?: {
+export type FetchShoppingListDetailsQuery = {
+  shoppingList?: {
     id: string;
     version: any;
-    key: string;
-    roles: Array<ChannelRole>;
-    nameAllLocales?: Array<{ locale: any; value: string }> | null;
+    key?: string | null;
+    nameAllLocales: Array<{ locale: any; value: string }>;
   } | null;
 };
 
+export type FetchShoppingListsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  sort?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+export type FetchShoppingListsQuery = {
+  shoppingLists: {
+    total: any;
+    results: Array<{
+      id: string;
+      version: any;
+      key?: string | null;
+      nameAllLocales: Array<{ locale: any; value: string }>;
+    }>;
+  };
+};
+
+export const LocalizedStringFieldsFragmentDoc = gql`
+  fragment localizedStringFields on LocalizedString {
+    locale
+    value
+  }
+`;
+export const ShoppingListFieldsFragmentDoc = gql`
+  fragment shoppingListFields on ShoppingList {
+    id
+    version
+    key
+    nameAllLocales {
+      ...localizedStringFields
+    }
+  }
+  ${LocalizedStringFieldsFragmentDoc}
+`;
+export const UpdateChannelDetailsDocument = gql`
+  mutation UpdateChannelDetails(
+    $channelId: String!
+    $version: Long!
+    $actions: [ChannelUpdateAction!]!
+  ) {
+    updateChannel(id: $channelId, version: $version, actions: $actions) {
+      id
+      version
+      key
+      roles
+      nameAllLocales {
+        locale
+        value
+      }
+    }
+  }
+`;
+export type UpdateChannelDetailsMutationFn = Apollo.MutationFunction<
+  UpdateChannelDetailsMutation,
+  UpdateChannelDetailsMutationVariables
+>;
+
+/**
+ * __useUpdateChannelDetailsMutation__
+ *
+ * To run a mutation, you first call `useUpdateChannelDetailsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateChannelDetailsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateChannelDetailsMutation, { data, loading, error }] = useUpdateChannelDetailsMutation({
+ *   variables: {
+ *      channelId: // value for 'channelId'
+ *      version: // value for 'version'
+ *      actions: // value for 'actions'
+ *   },
+ * });
+ */
+export function useUpdateChannelDetailsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateChannelDetailsMutation,
+    UpdateChannelDetailsMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateChannelDetailsMutation, UpdateChannelDetailsMutationVariables>(
+    UpdateChannelDetailsDocument,
+    options,
+  );
+}
+export type UpdateChannelDetailsMutationHookResult = ReturnType<
+  typeof useUpdateChannelDetailsMutation
+>;
+export type UpdateChannelDetailsMutationResult =
+  Apollo.MutationResult<UpdateChannelDetailsMutation>;
+export type UpdateChannelDetailsMutationOptions = Apollo.BaseMutationOptions<
+  UpdateChannelDetailsMutation,
+  UpdateChannelDetailsMutationVariables
+>;
+export const CreateShoppingListDocument = gql`
+  mutation CreateShoppingList($draft: ShoppingListDraft!) {
+    createShoppingList(draft: $draft) {
+      id
+    }
+  }
+`;
+export type CreateShoppingListMutationFn = Apollo.MutationFunction<
+  CreateShoppingListMutation,
+  CreateShoppingListMutationVariables
+>;
+
+/**
+ * __useCreateShoppingListMutation__
+ *
+ * To run a mutation, you first call `useCreateShoppingListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateShoppingListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createShoppingListMutation, { data, loading, error }] = useCreateShoppingListMutation({
+ *   variables: {
+ *      draft: // value for 'draft'
+ *   },
+ * });
+ */
+export function useCreateShoppingListMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateShoppingListMutation,
+    CreateShoppingListMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateShoppingListMutation, CreateShoppingListMutationVariables>(
+    CreateShoppingListDocument,
+    options,
+  );
+}
+export type CreateShoppingListMutationHookResult = ReturnType<typeof useCreateShoppingListMutation>;
+export type CreateShoppingListMutationResult = Apollo.MutationResult<CreateShoppingListMutation>;
+export type CreateShoppingListMutationOptions = Apollo.BaseMutationOptions<
+  CreateShoppingListMutation,
+  CreateShoppingListMutationVariables
+>;
+export const DeleteShoppingListDocument = gql`
+  mutation DeleteShoppingList($version: Long!, $id: String!) {
+    deleteShoppingList(version: $version, id: $id) {
+      id
+      version
+    }
+  }
+`;
+export type DeleteShoppingListMutationFn = Apollo.MutationFunction<
+  DeleteShoppingListMutation,
+  DeleteShoppingListMutationVariables
+>;
+
+/**
+ * __useDeleteShoppingListMutation__
+ *
+ * To run a mutation, you first call `useDeleteShoppingListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteShoppingListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteShoppingListMutation, { data, loading, error }] = useDeleteShoppingListMutation({
+ *   variables: {
+ *      version: // value for 'version'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteShoppingListMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteShoppingListMutation,
+    DeleteShoppingListMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteShoppingListMutation, DeleteShoppingListMutationVariables>(
+    DeleteShoppingListDocument,
+    options,
+  );
+}
+export type DeleteShoppingListMutationHookResult = ReturnType<typeof useDeleteShoppingListMutation>;
+export type DeleteShoppingListMutationResult = Apollo.MutationResult<DeleteShoppingListMutation>;
+export type DeleteShoppingListMutationOptions = Apollo.BaseMutationOptions<
+  DeleteShoppingListMutation,
+  DeleteShoppingListMutationVariables
+>;
+export const UpdateShoppingListDocument = gql`
+  mutation UpdateShoppingList(
+    $version: Long!
+    $id: String!
+    $actions: [ShoppingListUpdateAction!]!
+  ) {
+    updateShoppingList(version: $version, id: $id, actions: $actions) {
+      ...shoppingListFields
+    }
+  }
+  ${ShoppingListFieldsFragmentDoc}
+`;
+export type UpdateShoppingListMutationFn = Apollo.MutationFunction<
+  UpdateShoppingListMutation,
+  UpdateShoppingListMutationVariables
+>;
+
+/**
+ * __useUpdateShoppingListMutation__
+ *
+ * To run a mutation, you first call `useUpdateShoppingListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShoppingListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShoppingListMutation, { data, loading, error }] = useUpdateShoppingListMutation({
+ *   variables: {
+ *      version: // value for 'version'
+ *      id: // value for 'id'
+ *      actions: // value for 'actions'
+ *   },
+ * });
+ */
+export function useUpdateShoppingListMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateShoppingListMutation,
+    UpdateShoppingListMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateShoppingListMutation, UpdateShoppingListMutationVariables>(
+    UpdateShoppingListDocument,
+    options,
+  );
+}
+export type UpdateShoppingListMutationHookResult = ReturnType<typeof useUpdateShoppingListMutation>;
+export type UpdateShoppingListMutationResult = Apollo.MutationResult<UpdateShoppingListMutation>;
+export type UpdateShoppingListMutationOptions = Apollo.BaseMutationOptions<
+  UpdateShoppingListMutation,
+  UpdateShoppingListMutationVariables
+>;
 export const FetchChannelDetailsDocument = gql`
   query FetchChannelDetails($channelId: String!) {
     channel(id: $channelId) {
@@ -11980,66 +12251,121 @@ export type FetchChannelsQueryResult = Apollo.QueryResult<
   FetchChannelsQuery,
   FetchChannelsQueryVariables
 >;
-export const UpdateChannelDetailsDocument = gql`
-  mutation UpdateChannelDetails(
-    $channelId: String!
-    $version: Long!
-    $actions: [ChannelUpdateAction!]!
-  ) {
-    updateChannel(id: $channelId, version: $version, actions: $actions) {
-      id
-      version
-      key
-      roles
-      nameAllLocales {
-        locale
-        value
-      }
+export const FetchShoppingListDetailsDocument = gql`
+  query FetchShoppingListDetails($id: String!) {
+    shoppingList(id: $id) {
+      ...shoppingListFields
     }
   }
+  ${ShoppingListFieldsFragmentDoc}
 `;
-export type UpdateChannelDetailsMutationFn = Apollo.MutationFunction<
-  UpdateChannelDetailsMutation,
-  UpdateChannelDetailsMutationVariables
->;
 
 /**
- * __useUpdateChannelDetailsMutation__
+ * __useFetchShoppingListDetailsQuery__
  *
- * To run a mutation, you first call `useUpdateChannelDetailsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateChannelDetailsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useFetchShoppingListDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchShoppingListDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [updateChannelDetailsMutation, { data, loading, error }] = useUpdateChannelDetailsMutation({
+ * const { data, loading, error } = useFetchShoppingListDetailsQuery({
  *   variables: {
- *      channelId: // value for 'channelId'
- *      version: // value for 'version'
- *      actions: // value for 'actions'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useUpdateChannelDetailsMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateChannelDetailsMutation,
-    UpdateChannelDetailsMutationVariables
+export function useFetchShoppingListDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchShoppingListDetailsQuery,
+    FetchShoppingListDetailsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateChannelDetailsMutation, UpdateChannelDetailsMutationVariables>(
-    UpdateChannelDetailsDocument,
+  return Apollo.useQuery<FetchShoppingListDetailsQuery, FetchShoppingListDetailsQueryVariables>(
+    FetchShoppingListDetailsDocument,
     options,
   );
 }
-export type UpdateChannelDetailsMutationHookResult = ReturnType<
-  typeof useUpdateChannelDetailsMutation
+export function useFetchShoppingListDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchShoppingListDetailsQuery,
+    FetchShoppingListDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchShoppingListDetailsQuery, FetchShoppingListDetailsQueryVariables>(
+    FetchShoppingListDetailsDocument,
+    options,
+  );
+}
+export type FetchShoppingListDetailsQueryHookResult = ReturnType<
+  typeof useFetchShoppingListDetailsQuery
 >;
-export type UpdateChannelDetailsMutationResult =
-  Apollo.MutationResult<UpdateChannelDetailsMutation>;
-export type UpdateChannelDetailsMutationOptions = Apollo.BaseMutationOptions<
-  UpdateChannelDetailsMutation,
-  UpdateChannelDetailsMutationVariables
+export type FetchShoppingListDetailsLazyQueryHookResult = ReturnType<
+  typeof useFetchShoppingListDetailsLazyQuery
+>;
+export type FetchShoppingListDetailsQueryResult = Apollo.QueryResult<
+  FetchShoppingListDetailsQuery,
+  FetchShoppingListDetailsQueryVariables
+>;
+export const FetchShoppingListsDocument = gql`
+  query FetchShoppingLists($limit: Int!, $offset: Int!, $sort: [String!]) {
+    shoppingLists(limit: $limit, offset: $offset, sort: $sort) {
+      total
+      results {
+        ...shoppingListFields
+      }
+    }
+  }
+  ${ShoppingListFieldsFragmentDoc}
+`;
+
+/**
+ * __useFetchShoppingListsQuery__
+ *
+ * To run a query within a React component, call `useFetchShoppingListsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchShoppingListsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchShoppingListsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchShoppingListsQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchShoppingListsQuery, FetchShoppingListsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchShoppingListsQuery, FetchShoppingListsQueryVariables>(
+    FetchShoppingListsDocument,
+    options,
+  );
+}
+export function useFetchShoppingListsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchShoppingListsQuery,
+    FetchShoppingListsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchShoppingListsQuery, FetchShoppingListsQueryVariables>(
+    FetchShoppingListsDocument,
+    options,
+  );
+}
+export type FetchShoppingListsQueryHookResult = ReturnType<typeof useFetchShoppingListsQuery>;
+export type FetchShoppingListsLazyQueryHookResult = ReturnType<
+  typeof useFetchShoppingListsLazyQuery
+>;
+export type FetchShoppingListsQueryResult = Apollo.QueryResult<
+  FetchShoppingListsQuery,
+  FetchShoppingListsQueryVariables
 >;

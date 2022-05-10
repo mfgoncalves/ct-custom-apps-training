@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import omitEmpty from 'omit-empty-es';
+import { FormikErrors } from 'formik';
 
 const DUPLICATE_FIELD_ERROR_CODE = 'DuplicateField';
 
@@ -10,7 +11,7 @@ const DUPLICATE_FIELD_ERROR_CODE = 'DuplicateField';
  * @return Object TransformedErrors
  */
 
-export const transformErrors = (graphQlErrors) => {
+export function transformErrors<T = any>(graphQlErrors: any) {
   const errorsToMap = Array.isArray(graphQlErrors) ? graphQlErrors : [graphQlErrors];
 
   const { formErrors, unmappedErrors } = errorsToMap.reduce(
@@ -32,7 +33,7 @@ export const transformErrors = (graphQlErrors) => {
   );
 
   return {
-    formErrors: omitEmpty(formErrors),
+    formErrors: omitEmpty(formErrors) as FormikErrors<T>,
     unmappedErrors,
   };
-};
+}

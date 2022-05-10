@@ -1,13 +1,13 @@
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { createSyncChannels } from '@commercetools/sync-actions';
-import { docToFormValues } from '../../components/channel-details/conversions';
 import {
   useFetchChannelDetailsQuery,
   useFetchChannelsQuery,
   useUpdateChannelDetailsMutation,
 } from '../../graphql/generated/graphql';
 import { createGraphQlUpdateActions, extractErrorFromGraphQlResponse } from '../../helpers';
+import { docToFormValues } from '../../views/channels/helpers/conversions';
+import { useLocale } from '../use-locale';
 
 export const useChannelsFetcher = ({ page, perPage, tableSorting }) => {
   const { data, error, loading } = useFetchChannelsQuery({
@@ -28,7 +28,7 @@ export const useChannelsFetcher = ({ page, perPage, tableSorting }) => {
   };
 };
 
-export const useChannelDetailsFetcher = (channelId) => {
+export const useChannelDetailsFetcher = (channelId: string) => {
   const { data, error, loading } = useFetchChannelDetailsQuery({
     variables: {
       channelId,
@@ -46,16 +46,14 @@ export const useChannelDetailsFetcher = (channelId) => {
 };
 
 export const useChannelDetailsUpdater = () => {
-  const { projectLanguages } = useApplicationContext((context) => ({
-    dataLocale: context.dataLocale,
-    projectLanguages: context.project.languages,
-  }));
+  const { projectLanguages } = useLocale();
 
   const [updateChannelDetails, { loading }] = useUpdateChannelDetailsMutation();
 
   const syncStores = createSyncChannels();
   const execute = async ({ original, nextDraft }) => {
     const originalDraft = docToFormValues(original, projectLanguages);
+
     const actions = syncStores.buildActions(nextDraft, originalDraft);
     try {
       return await updateChannelDetails({

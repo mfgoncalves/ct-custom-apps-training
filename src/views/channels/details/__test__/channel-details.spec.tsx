@@ -10,10 +10,10 @@ import {
 } from '@commercetools-frontend/application-shell/test-utils';
 import { buildGraphqlList } from '@commercetools-test-data/core';
 import { LocalizedString } from '@commercetools-test-data/commons';
-import { renderApplicationWithRedux } from '../../test-utils';
-import * as ChannelMock from '../../test-utils/test-data/channel';
-import { entryPointUriPath, PERMISSIONS } from '../../constants/constants';
-import ApplicationRoutes from '../../routes';
+import { renderApplicationWithRedux } from '../../../../test-utils';
+import * as ChannelMock from '../../../../test-utils/test-data/channel';
+import { entryPointUriPath, PERMISSIONS } from '../../../../constants/constants';
+import ApplicationRoutes from '../../../../routes';
 
 const mockServer = setupServer();
 afterEach(() => mockServer.resetHandlers());

@@ -1,0 +1,8 @@
+query FetchShoppingLists($limit: Int!, $offset: Int!, $sort: [String!]) {
+  shoppingLists(limit: $limit, offset: $offset, sort: $sort) {
+    total
+    results {
+      ...shoppingListFields
+    }
+  }
+}

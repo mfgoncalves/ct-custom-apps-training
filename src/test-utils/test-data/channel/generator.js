@@ -1,6 +1,6 @@
 import { sequence, fake, Generator } from '@commercetools-test-data/core';
 import { LocalizedString } from '@commercetools-test-data/commons';
-import { CHANNEL_ROLES } from '../../../components/channel-details/constants';
+import { CHANNEL_ROLES } from '../../../views/channels/helpers/constants';
 
 // https://docs.commercetools.com/api/projects/channels#channel
 const generator = Generator({

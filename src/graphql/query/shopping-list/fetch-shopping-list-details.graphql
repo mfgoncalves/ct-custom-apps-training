@@ -1,0 +1,5 @@
+query FetchShoppingListDetails($id: String!) {
+  shoppingList(id: $id) {
+    ...shoppingListFields
+  }
+}

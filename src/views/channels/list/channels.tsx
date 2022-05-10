@@ -1,5 +1,4 @@
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import {
   formatLocalizedString,
@@ -18,12 +17,13 @@ import Text from '@commercetools-uikit/text';
 import React, { lazy } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, Switch, useHistory, useRouteMatch } from 'react-router-dom';
-import { getErrorMessage } from '../../helpers';
-import { useChannelsFetcher } from '../../hooks/use-channels-connector';
-import useRoutes from '../../hooks/use-channels-connector/use-routes';
-import messages from './messages';
+import messages from '../../../components/channels/messages';
+import { getErrorMessage } from '../../../helpers';
+import { useChannelsFetcher } from '../../../hooks/use-channels-connector';
+import { useLocale } from '../../../hooks/use-locale';
+import useRoutes from '../../../hooks/use-routes';
 
-const ChannelDetails = lazy(() => import('../channel-details'));
+const ChannelDetails = lazy(() => import('../details/channel-details'));
 
 const columns = [
   { key: 'name', label: 'Channel name' },
@@ -31,13 +31,22 @@ const columns = [
   { key: 'roles', label: 'Roles' },
 ];
 
-const itemRenderer = (item, column, dataLocale, projectLanguages) => {
+type Channel = NonNullable<
+  ReturnType<typeof useChannelsFetcher>['channelsPaginatedResult']
+>['results'][number];
+
+const itemRenderer = (
+  item: Channel,
+  column: { key: string },
+  dataLocale: string,
+  projectLanguages: string[],
+) => {
   switch (column.key) {
     case 'roles':
       return item.roles.join(', ');
     case 'name':
       return formatLocalizedString(
-        { name: transformLocalizedFieldToLocalizedString(item.nameAllLocales) },
+        { name: transformLocalizedFieldToLocalizedString(item.nameAllLocales ?? []) },
         {
           key: 'name',
           locale: dataLocale,
@@ -46,21 +55,19 @@ const itemRenderer = (item, column, dataLocale, projectLanguages) => {
         },
       );
     default:
+      // @ts-expect-error column.key might not be present in Channel
       return item[column.key];
   }
 };
 
-const Channels = (props) => {
+const Channels = (props: any) => {
   const routes = useRoutes();
-  const intl = useIntl();
   const match = useRouteMatch();
+  const intl = useIntl();
   const { push } = useHistory();
   const { page, perPage } = usePaginationState();
   const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
-  const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
-    dataLocale: context.dataLocale,
-    projectLanguages: context.project.languages,
-  }));
+  const { dataLocale, projectLanguages } = useLocale();
   const { channelsPaginatedResult, error, loading } = useChannelsFetcher({
     page,
     perPage,
