@@ -14,7 +14,7 @@ import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { PERMISSIONS } from '../../../constants/constants';
-import { transformErrors } from '../../../helpers/transform-errors';
+import { transformErrors } from '../../../helpers';
 import {
   useChannelDetailsFetcher,
   useChannelDetailsUpdater,

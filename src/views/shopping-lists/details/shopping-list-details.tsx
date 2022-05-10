@@ -17,7 +17,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { PERMISSIONS } from '../../../constants';
-import { transformErrors } from '../../../helpers/transform-errors';
+import { transformErrors } from '../../../helpers';
 import { useLocale } from '../../../hooks/use-locale';
 import { useShoppingListDetailsFetcher } from '../../../hooks/use-shopping-lists-connector';
 import { useShoppingListDetailsUpdater } from '../../../hooks/use-shopping-lists-connector/use-shopping-lists-connector';
