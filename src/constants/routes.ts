@@ -11,4 +11,5 @@ export const ROUTES = {
   addShoppingList: `${DEFAULT}/shopping-lists/new`,
   shoppingLists: `${DEFAULT}/shopping-lists`,
   shoppingListDetails: `${DEFAULT}/shopping-lists/:id`,
+  shoppingListDetailsItems: `${DEFAULT}/shopping-lists/:id/items`,
 };

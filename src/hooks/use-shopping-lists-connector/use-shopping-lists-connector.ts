@@ -1,5 +1,6 @@
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import {
+  useDeleteShoppingListMutation,
   useFetchShoppingListDetailsQuery,
   useFetchShoppingListsQuery,
   useUpdateShoppingListMutation,
@@ -8,6 +9,8 @@ import { createGraphQlUpdateActions, extractErrorFromGraphQlResponse } from '../
 import { FetcherWithPagination } from '../../types';
 import { docToFormValues } from '../../views/shopping-lists/helpers/conversions';
 import { getShoppingListActions } from './actions';
+
+type ShoppingList = NonNullable<ReturnType<typeof useShoppingListDetailsFetcher>['shoppingList']>;
 
 export const useShoppingListsFetcher = ({ page, perPage, tableSorting }: FetcherWithPagination) => {
   const { data, ...rest } = useFetchShoppingListsQuery({
@@ -19,6 +22,7 @@ export const useShoppingListsFetcher = ({ page, perPage, tableSorting }: Fetcher
     context: {
       target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   return {
@@ -46,13 +50,7 @@ export const useShoppingListDetailsFetcher = (shoppingListId: string) => {
 export const useShoppingListDetailsUpdater = () => {
   const [updateShoppingListDetails, result] = useUpdateShoppingListMutation();
 
-  const execute = async ({
-    original,
-    nextDraft,
-  }: {
-    original: NonNullable<ReturnType<typeof useShoppingListDetailsFetcher>['shoppingList']>;
-    nextDraft: any;
-  }) => {
+  const execute = async ({ original, nextDraft }: { original: ShoppingList; nextDraft: any }) => {
     const originalDraft = docToFormValues(original);
 
     const actions = getShoppingListActions(originalDraft, nextDraft);
@@ -66,6 +64,33 @@ export const useShoppingListDetailsUpdater = () => {
           id: original.id,
           version: original.version,
           actions: createGraphQlUpdateActions(actions),
+        },
+      });
+    } catch (graphqlResponse) {
+      throw extractErrorFromGraphQlResponse(graphqlResponse);
+    }
+  };
+
+  return { execute, ...result };
+};
+
+export const useShoppingListDeleter = () => {
+  const [deleteShoppingList, result] = useDeleteShoppingListMutation();
+
+  const execute = async (shoppingList: ShoppingList) => {
+    try {
+      return await deleteShoppingList({
+        context: {
+          target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
+        },
+        variables: {
+          id: shoppingList.id,
+          version: shoppingList.version,
+        },
+        update(cache) {
+          const normalizedId = cache.identify({ id: shoppingList.id, __typename: 'ShoppingList' });
+          cache.evict({ id: normalizedId });
+          cache.gc();
         },
       });
     } catch (graphqlResponse) {

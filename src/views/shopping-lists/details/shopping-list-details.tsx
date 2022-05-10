@@ -2,10 +2,18 @@ import {
   useShowApiErrorNotification,
   useShowNotification,
 } from '@commercetools-frontend/actions-global';
-import { FormModalPage, PageNotFound } from '@commercetools-frontend/application-components';
+import {
+  ConfirmationDialog,
+  PageNotFound,
+  TabHeader,
+  TabularModalPage,
+  useModalState,
+} from '@commercetools-frontend/application-components';
 import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { formatLocalizedString } from '@commercetools-frontend/l10n';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
+import IconButton from '@commercetools-uikit/icon-button';
+import { BinLinearIcon } from '@commercetools-uikit/icons';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import LocalizedTextField from '@commercetools-uikit/localized-text-field';
 import { ContentNotification } from '@commercetools-uikit/notifications';
@@ -19,8 +27,12 @@ import { useParams } from 'react-router-dom';
 import { PERMISSIONS } from '../../../constants';
 import { transformErrors } from '../../../helpers';
 import { useLocale } from '../../../hooks/use-locale';
-import { useShoppingListDetailsFetcher } from '../../../hooks/use-shopping-lists-connector';
-import { useShoppingListDetailsUpdater } from '../../../hooks/use-shopping-lists-connector/use-shopping-lists-connector';
+import useRoutes from '../../../hooks/use-routes';
+import {
+  useShoppingListDeleter,
+  useShoppingListDetailsFetcher,
+  useShoppingListDetailsUpdater,
+} from '../../../hooks/use-shopping-lists-connector';
 import { docToFormValues, FormValues } from '../helpers/conversions';
 import messages from './messages';
 
@@ -29,11 +41,14 @@ interface Props {
 }
 
 const ShoppingListDetails = (props: Props) => {
+  const confirmDeleteShoppingListDialog = useModalState();
+
   const params = useParams<{ id: string }>();
   const intl = useIntl();
   const { shoppingList, error, loading } = useShoppingListDetailsFetcher(params.id);
-
+  const routes = useRoutes();
   const shoppingListUpdater = useShoppingListDetailsUpdater();
+  const shoppingListDeleter = useShoppingListDeleter();
   const formik = useFormik<FormValues>({
     initialValues: docToFormValues(shoppingList),
     onSubmit: async (values, formikHelpers) => {
@@ -79,7 +94,7 @@ const ShoppingListDetails = (props: Props) => {
   const showApiErrorNotification = useShowApiErrorNotification();
 
   return (
-    <FormModalPage
+    <TabularModalPage
       title={formatLocalizedString(
         {
           name: formik.values.name,
@@ -91,14 +106,70 @@ const ShoppingListDetails = (props: Props) => {
           fallback: NO_VALUE_FALLBACK,
         },
       )}
+      zIndex={500}
       isOpen
       onClose={props.onClose}
-      isPrimaryButtonDisabled={formik.isSubmitting || !formik.dirty || !canManage}
-      isSecondaryButtonDisabled={!formik.dirty}
-      onSecondaryButtonClick={() => formik.resetForm}
-      onPrimaryButtonClick={formik.submitForm}
-      labelPrimaryButton={FormModalPage.Intl.save}
-      labelSecondaryButton={FormModalPage.Intl.revert}
+      // isPrimaryButtonDisabled={formik.isSubmitting || !formik.dirty || !canManage}
+      // isSecondaryButtonDisabled={!formik.dirty}
+      // onSecondaryButtonClick={() => formik.resetForm}
+      // onPrimaryButtonClick={formik.submitForm}
+      // labelPrimaryButton={FormModalPage.Intl.save}
+      // labelSecondaryButton={FormModalPage.Intl.revert}
+      tabControls={
+        <>
+          <TabHeader
+            key="general"
+            intlMessage={messages.stepGeneral}
+            to={routes.shoppingListDetails.getUrl()}
+            exactPathMatch={true}
+          />
+          <TabHeader
+            key="items"
+            intlMessage={messages.stepItems}
+            to={routes.shoppingListDetailsItems.getUrl()}
+          />
+        </>
+      }
+      hideControls={false}
+      formControls={
+        <>
+          <IconButton
+            icon={<BinLinearIcon />}
+            label={intl.formatMessage(messages.delete)}
+            isDisabled={false}
+            onClick={confirmDeleteShoppingListDialog.openModal}
+          />
+          <ConfirmationDialog
+            title={intl.formatMessage(messages.backToShoppingListsList)}
+            isOpen={confirmDeleteShoppingListDialog.isModalOpen}
+            onCancel={confirmDeleteShoppingListDialog.closeModal}
+            onClose={confirmDeleteShoppingListDialog.closeModal}
+            onConfirm={async () => {
+              confirmDeleteShoppingListDialog.closeModal();
+              if (shoppingList) {
+                try {
+                  await shoppingListDeleter.execute(shoppingList);
+                  routes.shoppingLists.go();
+                  showNotification({
+                    kind: 'success',
+                    domain: DOMAINS.SIDE,
+                    text: intl.formatMessage(messages.shoppingListDeleted),
+                  });
+                } catch (graphQLErrors) {
+                  const transformedErrors = transformErrors(graphQLErrors);
+                  if (transformedErrors.unmappedErrors.length > 0) {
+                    showApiErrorNotification({
+                      errors: transformedErrors.unmappedErrors,
+                    });
+                  }
+                }
+              }
+            }}
+          >
+            <Text.Body intlMessage={messages.confirmDeleteShoppingList} />
+          </ConfirmationDialog>
+        </>
+      }
     >
       {loading && (
         <Spacings.Stack alignItems="center">
@@ -150,7 +221,7 @@ const ShoppingListDetails = (props: Props) => {
           />
         </Spacings.Stack>
       </form>
-    </FormModalPage>
+    </TabularModalPage>
   );
 };
 
