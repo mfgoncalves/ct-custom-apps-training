@@ -11,15 +11,17 @@ import { BackIcon } from '@commercetools-uikit/icons';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import { Pagination } from '@commercetools-uikit/pagination';
+import PrimaryButton from '@commercetools-uikit/primary-button';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, Switch } from 'react-router-dom';
+import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 import { getErrorMessage } from '../../../helpers';
 import { useLocale } from '../../../hooks/use-locale';
 import useRoutes from '../../../hooks/use-routes';
 import { useShoppingListsFetcher } from '../../../hooks/use-shopping-lists-connector';
+import CreateShoppingList from '../create/create-shopping-list';
 import ShoppingListDetails from '../details/shopping-list-details';
 import messages from './messages';
 
@@ -102,7 +104,10 @@ const ShoppingLists = (props: Props) => {
       {loading && <LoadingSpinner />}
 
       {paginatedResult && (
-        <Spacings.Stack>
+        <Spacings.Stack scale="m">
+          <div>
+            <PrimaryButton onClick={routes.createShoppingList.go} label="Add Shopping List" />
+          </div>
           <DataTable
             isCondensed
             columns={columns}
@@ -124,6 +129,12 @@ const ShoppingLists = (props: Props) => {
             totalItems={paginatedResult.total}
           />
           <Switch>
+            <Route path={routes.createShoppingList.path}>
+              <CreateShoppingList
+                onClose={routes.shoppingLists.go}
+                onSuccess={routes.shoppingListDetails.go}
+              />
+            </Route>
             <SuspendedRoute path={routes.shoppingListDetails.path}>
               <ShoppingListDetails onClose={routes.shoppingLists.go} />
             </SuspendedRoute>

@@ -1,5 +1,8 @@
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import {
+  FetchShoppingListsDocument,
+  ShoppingListDraft,
+  useCreateShoppingListMutation,
   useDeleteShoppingListMutation,
   useFetchShoppingListDetailsQuery,
   useFetchShoppingListsQuery,
@@ -7,7 +10,7 @@ import {
 } from '../../graphql/generated/graphql';
 import { createGraphQlUpdateActions, extractErrorFromGraphQlResponse } from '../../helpers';
 import { FetcherWithPagination } from '../../types';
-import { docToFormValues } from '../../views/shopping-lists/helpers/conversions';
+import { docToFormValues, formValuesToDoc } from '../../views/shopping-lists/helpers/conversions';
 import { getShoppingListActions } from './actions';
 
 type ShoppingList = NonNullable<ReturnType<typeof useShoppingListDetailsFetcher>['shoppingList']>;
@@ -92,6 +95,28 @@ export const useShoppingListDeleter = () => {
           cache.evict({ id: normalizedId });
           cache.gc();
         },
+      });
+    } catch (graphqlResponse) {
+      throw extractErrorFromGraphQlResponse(graphqlResponse);
+    }
+  };
+
+  return { execute, ...result };
+};
+
+export const useShoppingListCreator = () => {
+  const [createShoppingList, result] = useCreateShoppingListMutation();
+
+  const execute = async (draft: ShoppingListDraft) => {
+    try {
+      return await createShoppingList({
+        context: {
+          target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
+        },
+        variables: {
+          draft: formValuesToDoc(draft),
+        },
+        refetchQueries: [FetchShoppingListsDocument],
       });
     } catch (graphqlResponse) {
       throw extractErrorFromGraphQlResponse(graphqlResponse);

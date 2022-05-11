@@ -8,7 +8,7 @@ export const ROUTES = {
   channelList: `${DEFAULT}/channels`,
   channelDetails: `${DEFAULT}/channels/:id`,
   // Shopping Lists
-  addShoppingList: `${DEFAULT}/shopping-lists/new`,
+  createShoppingList: `${DEFAULT}/shopping-lists/new`,
   shoppingLists: `${DEFAULT}/shopping-lists`,
   shoppingListDetails: `${DEFAULT}/shopping-lists/:id`,
   shoppingListDetailsItems: `${DEFAULT}/shopping-lists/:id/items`,

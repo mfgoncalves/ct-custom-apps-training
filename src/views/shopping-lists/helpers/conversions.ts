@@ -1,4 +1,8 @@
-import { transformLocalizedFieldToLocalizedString } from '@commercetools-frontend/l10n';
+import {
+  transformLocalizedFieldToLocalizedString,
+  transformLocalizedStringToLocalizedField,
+} from '@commercetools-frontend/l10n';
+import { ShoppingListDraft } from '../../../graphql/generated/graphql';
 import { useShoppingListDetailsFetcher } from '../../../hooks/use-shopping-lists-connector';
 
 type ShoppingList = ReturnType<typeof useShoppingListDetailsFetcher>['shoppingList'];
@@ -13,4 +17,7 @@ export const docToFormValues = (shoppingList: Partial<ShoppingList>): FormValues
   name: transformLocalizedFieldToLocalizedString(shoppingList?.nameAllLocales ?? []) ?? {},
 });
 
-export const formValuesToDoc = () => ({});
+export const formValuesToDoc = ({ name, ...rest }: Partial<ShoppingListDraft>) => ({
+  ...rest,
+  name: transformLocalizedStringToLocalizedField((name ?? []) as any),
+});
