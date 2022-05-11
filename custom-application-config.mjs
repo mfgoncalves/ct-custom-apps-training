@@ -14,7 +14,7 @@ const config = {
 
     production: {
       applicationId: '${env:APPLICATION_ID}',
-      url: 'https://ct-training-mfgoncalves.vercel.app',
+      url: 'https://ct-custom-apps-training.vercel.app',
     },
   },
 
