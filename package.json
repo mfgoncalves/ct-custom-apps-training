@@ -67,6 +67,7 @@
     "@commercetools-frontend/mc-scripts": "21.5.0",
     "@commercetools-test-data/commons": "3.0.0",
     "@commercetools-test-data/core": "3.0.0",
+    "@commercetools-test-data/utils": "^3.0.2",
     "@formatjs/cli": "4.8.3",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/introspection": "^2.1.1",

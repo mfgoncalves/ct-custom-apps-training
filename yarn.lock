@@ -1653,6 +1653,15 @@
     "@types/lodash" "^4.14.168"
     lodash "^4.17.21"
 
+"@commercetools-test-data/utils@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@commercetools-test-data/utils/-/utils-3.0.2.tgz#ae9aad81307ae96460338bafa6e18cb2e83db30b"
+  integrity sha512-mwlFc2ycXke3/7ruAAbDyS73Js+DIpEj22/z7GtwCG6uWJSLkYulblD3rgXD1ERLnEZj/vozqq5PNboHJ/Rg4g==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@babel/runtime-corejs3" "^7.17.9"
+    "@faker-js/faker" "^6.2.0"
+
 "@commercetools-uikit/accessible-button@15.0.0":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-button/-/accessible-button-15.0.0.tgz#92c519bf59eb6c1177e821d6669bb10263819524"
@@ -2472,7 +2481,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@faker-js/faker@^6.0.0":
+"@faker-js/faker@^6.0.0", "@faker-js/faker@^6.2.0":
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-6.3.1.tgz#1ae963dd40405450a2945408cba553e1afa3e0fb"
   integrity sha512-8YXBE2ZcU/pImVOHX7MWrSR/X5up7t6rPWZlk34RwZEcdr3ua6X+32pSd6XuOQRN+vbuvYNfA6iey8NbrjuMFQ==

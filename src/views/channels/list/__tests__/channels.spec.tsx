@@ -1,23 +1,21 @@
-import React from 'react';
-import { graphql } from 'msw';
-import { setupServer } from 'msw/node';
 import {
   fireEvent,
-  screen,
   mapResourceAccessToAppliedPermissions,
+  screen,
 } from '@commercetools-frontend/application-shell/test-utils';
 import { buildGraphqlList } from '@commercetools-test-data/core';
-import { renderApplicationWithRedux } from '../../../../test-utils';
-import * as ChannelMock from '../../../../test-utils/test-data/channel';
+import { graphql } from 'msw';
+import { setupServer } from 'msw/node';
+import React from 'react';
 import { entryPointUriPath, PERMISSIONS } from '../../../../constants/constants';
 import ApplicationRoutes from '../../../../routes';
+import { renderApplicationWithRedux } from '../../../../test-utils';
+import * as ChannelMock from '../../../../test-utils/test-data/channel';
 
 const mockServer = setupServer();
 afterEach(() => mockServer.resetHandlers());
 beforeAll(() =>
   mockServer.listen({
-    // for debugging reasons we force an error when the test fires a request with a query or mutation which is not mocked
-    // more: https://mswjs.io/docs/api/setup-worker/start#onunhandledrequest
     onUnhandledRequest: 'error',
   }),
 );
@@ -42,7 +40,6 @@ it('should render channels and paginate to second page', async () => {
       const { offset } = req.variables;
       const totalItems = 25; // 2 pages
       const itemsPerPage = offset === 0 ? 20 : 5;
-
       return res(
         ctx.data({
           channels: buildGraphqlList(

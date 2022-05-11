@@ -21,6 +21,7 @@ import { getErrorMessage } from '../../../helpers';
 import { useLocale } from '../../../hooks/use-locale';
 import useRoutes from '../../../hooks/use-routes';
 import { useShoppingListsFetcher } from '../../../hooks/use-shopping-lists-connector';
+import * as ShoppingListMock from '../../../test-utils/test-data/channel';
 import CreateShoppingList from '../create/create-shopping-list';
 import ShoppingListDetails from '../details/shopping-list-details';
 import messages from './messages';
@@ -68,6 +69,9 @@ const itemRenderer = (
 };
 
 const ShoppingLists = (props: Props) => {
+  const mock = ShoppingListMock.random().key('teste');
+  console.log({ mock: mock.buildGraphql() });
+
   const routes = useRoutes();
   const { page, perPage } = usePaginationState();
   const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
