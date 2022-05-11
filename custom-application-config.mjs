@@ -4,7 +4,7 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
  */
 const config = {
-  name: 'Ct Ca Training',
+  name: 'CT CA Training',
   entryPointUriPath,
   cloudIdentifier: 'gcp-us',
   env: {
@@ -13,8 +13,8 @@ const config = {
     },
 
     production: {
-      applicationId: 'TODO',
-      url: 'https://your_app_hostname.com',
+      applicationId: '${env:APPLICATION_ID}',
+      url: 'https://ct-training-mfgoncalves.vercel.app',
     },
   },
 
@@ -25,7 +25,7 @@ const config = {
 
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
-    defaultLabel: 'Ct Ca Training',
+    defaultLabel: 'CT CA Training',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
